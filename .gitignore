@@ -1,0 +1,114 @@
+# Fichiers d'environnement et de secrets
+*.env
+.env
+
+# Fichiers de données et formats spécifiques demandés
+*.json
+*.parquet
+*.csv
+
+# --- Exclusions Python courantes ---
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+# Usually these files are written by a python script from a template
+# before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Environments
+# .env # Déjà inclus en haut
+.venv
+env/
+venv/
+ENV/
+VENV/
+env.bak/
+venv.bak/
+
+# IDE / Editor specific files
+.vscode/
+.idea/
+*.project
+*.pydevproject
+.DS_Store
+
+# Logs (si vous avez un dossier de logs spécifique non couvert par *.log)
+# logs/ # Décommenter si vous avez un dossier 'logs' spécifique à ignorer
+*.log
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Fichiers de configuration spécifiques au projet qui pourraient contenir des secrets (si applicable)
+# Exemple: si vous avez un fichier de clés API spécifique non couvert par .env
+# config/api_keys.json # Déjà inclus par *.json plus haut
+
+# Fichiers de résultats de tests ou de construction temporaires spécifiques à votre projet
+# results_test_rest_init/ # Exemple tiré de l'historique, à adapter
+
+# --- Avertissements pour les fichiers demandés ---
+# ATTENTION avec *.json:
+# Cela ignorera TOUS les fichiers .json. Si certains fichiers .json de configuration
+# (qui ne contiennent PAS de secrets) DOIVENT être versionnés (ex: config_global.json, config_live.json),
+# vous devrez les ajouter explicitement avec 'git add -f chemin/vers/le/fichier.json'
+# ou les exclure de cette règle avec une négation (plus complexe) :
+# !config/config_global.json
+# !config/config_live.json
+# etc.
+
+# ATTENTION avec *.csv et *.parquet:
+# Cela ignorera TOUS les fichiers .csv et .parquet. Si certains fichiers de données de référence
+# ou des exemples de petite taille DOIVENT être versionnés, utilisez 'git add -f ...'
+# ou affinez les règles (par exemple, ignorer seulement les fichiers dans des dossiers spécifiques):
+# data/live/raw/*.csv
+# data/live/processed/*.csv
+# data/historical/raw/*.csv
+# data/historical/processed/*.csv
+# data/live_state/*.json # Déjà couvert par *.json, mais pour illustrer la spécificité
+

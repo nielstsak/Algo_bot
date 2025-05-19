@@ -1,0 +1,8 @@
+pandas>=1.5.0
+numpy>=1.20.0
+python-binance>=1.0.19
+optuna>=3.0.0
+pandas-ta>=0.3.14b0
+python-dotenv>=1.0.0
+# Ajouter d'autres dépendances si nécessaire au fur et à mesure du développement détaillé
+# par exemple : requests, pyarrow (pour parquet), matplotlib/seaborn (pour rapports graphiques)
