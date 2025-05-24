@@ -33,8 +33,6 @@ class StudyManager:
 
         self.study_output_dir.mkdir(parents=True, exist_ok=True)
         
-        # Nom de la base de données Optuna spécifique à ce fold
-        # Modifié pour correspondre au nom utilisé dans les logs de l'utilisateur et éviter les conflits potentiels
         db_file_name = f"optuna_is_study_{self.strategy_name}_{self.pair_symbol}_{self.study_output_dir.name}.db"
         self.db_path_str = str((self.study_output_dir / db_file_name).resolve())
         self.storage_url = f"sqlite:///{self.db_path_str}"
@@ -42,6 +40,11 @@ class StudyManager:
 
 
     def _create_sampler(self) -> optuna.samplers.BaseSampler:
+        # Assurez-vous que self.optuna_settings.sampler_name existe
+        if not hasattr(self.optuna_settings, 'sampler_name') or not self.optuna_settings.sampler_name:
+            logger.error(f"{self.log_prefix} 'sampler_name' manquant dans OptunaSettings. Utilisation de TPESampler par défaut.")
+            return optuna.samplers.TPESampler()
+            
         sampler_name = self.optuna_settings.sampler_name.lower()
         sampler_params = self.optuna_settings.sampler_params or {}
         logger.info(f"{self.log_prefix} Creating sampler: {sampler_name} with params: {sampler_params}")
@@ -58,6 +61,10 @@ class StudyManager:
             return optuna.samplers.TPESampler()
 
     def _create_pruner(self) -> optuna.pruners.BasePruner:
+        if not hasattr(self.optuna_settings, 'pruner_name') or not self.optuna_settings.pruner_name:
+            logger.error(f"{self.log_prefix} 'pruner_name' manquant dans OptunaSettings. Utilisation de MedianPruner par défaut.")
+            return optuna.pruners.MedianPruner()
+
         pruner_name = self.optuna_settings.pruner_name.lower()
         pruner_params = self.optuna_settings.pruner_params or {}
         logger.info(f"{self.log_prefix} Creating pruner: {pruner_name} with params: {pruner_params}")
@@ -84,7 +91,6 @@ class StudyManager:
                   objective_evaluator_class: Type['ObjectiveEvaluator']
                   ) -> optuna.Study:
         
-        # Nom de l'étude Optuna pour ce fold
         study_name = f"{self.strategy_name}_{self.pair_symbol}_{self.study_output_dir.name}_is_opt"
         logger.info(f"{self.log_prefix} Preparing to run/load Optuna study: '{study_name}'")
 
@@ -122,11 +128,10 @@ class StudyManager:
             'objectives_directions': objectives_directions
         }
 
-        # CORRECTION ICI: Utiliser 'df_enriched_slice' au lieu de 'data_1min_cleaned_slice'
         objective_instance = objective_evaluator_class(
             strategy_name=self.strategy_name,
             strategy_config_dict=self.strategy_config_dict,
-            df_enriched_slice=data_1min_cleaned_is_slice, # Argument renommé
+            df_enriched_slice=data_1min_cleaned_is_slice, # Nom d'argument corrigé
             simulation_settings=self.app_config.global_config.simulation_defaults.__dict__,
             optuna_objectives_config=optuna_objectives_config_for_evaluator,
             pair_symbol=self.pair_symbol,
